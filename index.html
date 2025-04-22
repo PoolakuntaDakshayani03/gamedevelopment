@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chess Game</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Chess Game</h1>
-  <div id="chessboard"></div>
+  <div class="game">
+    <div id="chessboard"></div>
+    <div class="captured-pieces">
+      <div id="whiteCaptured" class="captured">
+        <h3>White Captured</h3>
+      </div>
+      <div id="blackCaptured" class="captured">
+        <h3>Black Captured</h3>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
