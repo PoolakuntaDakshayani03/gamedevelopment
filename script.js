@@ -31,7 +31,7 @@ function createBoard() {
       const piece = boardState[row][col];
       if (piece) {
         const img = document.createElement("img");
-        img.src = "assets/" + piece + ".png";  // Image path
+        img.src = piece + ".png";  // Image path
         img.classList.add("piece");
         img.dataset.piece = piece;
         img.dataset.row = row;
