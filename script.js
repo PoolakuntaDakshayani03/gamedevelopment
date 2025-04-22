@@ -1,4 +1,6 @@
 const board = document.getElementById("chessboard");
+const whiteCaptured = document.getElementById("whiteCaptured");
+const blackCaptured = document.getElementById("blackCaptured");
 
 let boardState = [
   ["b_rook", "b_knight", "b_bishop", "b_queen", "b_king", "b_bishop", "b_knight", "b_rook"],
@@ -14,9 +16,11 @@ let boardState = [
 let selected = null;
 let turn = "w"; // white starts
 
+let whiteCapturedPieces = [];
+let blackCapturedPieces = [];
+
 function createBoard() {
   board.innerHTML = "";
-
   for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 8; col++) {
       const square = document.createElement("div");
@@ -27,7 +31,7 @@ function createBoard() {
       const piece = boardState[row][col];
       if (piece) {
         const img = document.createElement("img");
-        img.src = piece + ".png";  // Image path
+        img.src = "assets/" + piece + ".png";  // Image path
         img.classList.add("piece");
         img.dataset.piece = piece;
         img.dataset.row = row;
@@ -38,6 +42,26 @@ function createBoard() {
       board.appendChild(square);
     }
   }
+  updateCapturedPieces();
+}
+
+function updateCapturedPieces() {
+  whiteCaptured.innerHTML = "";
+  blackCaptured.innerHTML = "";
+
+  whiteCapturedPieces.forEach(piece => {
+    const img = document.createElement("img");
+    img.src = "assets/" + piece + ".png";
+    img.classList.add("captured");
+    whiteCaptured.appendChild(img);
+  });
+
+  blackCapturedPieces.forEach(piece => {
+    const img = document.createElement("img");
+    img.src = "assets/" + piece + ".png";
+    img.classList.add("captured");
+    blackCaptured.appendChild(img);
+  });
 }
 
 board.addEventListener("click", (e) => {
@@ -60,6 +84,10 @@ board.addEventListener("click", (e) => {
 
   // If clicking a highlighted hint square, move directly
   if (square.classList.contains("hint")) {
+    if (boardState[row][col] !== "") {
+      // If the square contains an opponent piece, capture it
+      capturePiece(row, col);
+    }
     boardState[row][col] = selected.piece;
     boardState[selected.row][selected.col] = "";
     turn = turn === "w" ? "b" : "w";
@@ -74,6 +102,15 @@ board.addEventListener("click", (e) => {
   clearHighlights();
   createBoard();
 });
+
+function capturePiece(row, col) {
+  const capturedPiece = boardState[row][col];
+  if (capturedPiece.startsWith("w")) {
+    whiteCapturedPieces.push(capturedPiece);
+  } else {
+    blackCapturedPieces.push(capturedPiece);
+  }
+}
 
 function highlightSelected(row, col) {
   document.querySelectorAll(".square").forEach(sq => {
